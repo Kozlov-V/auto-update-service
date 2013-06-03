@@ -22,7 +22,7 @@ public interface AppUpdate {
 	 * 
 	 * @param displayer
 	 */
-	void setCustomDisplayer(Displayer displayer);
+	void setCustomDisplayer(DisplayDelegate displayer);
 
 	/**
 	 * 从指定URL检查新版本，并指定响应数据解析器。

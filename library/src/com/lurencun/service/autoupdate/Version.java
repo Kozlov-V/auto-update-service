@@ -31,7 +31,7 @@ public class Version {
 	
 	@Override
 	public String toString(){
-		StringBuffer buffer = new StringBuffer("VERSION -> ");
+		StringBuilder buffer = new StringBuilder(":: VERSION -> ");
 		buffer.append("Code:").append(code).append(", ");
 		buffer.append("Name:").append(name).append(", ");
 		buffer.append("Feature:").append(feature).append(", ");

@@ -7,7 +7,16 @@ package com.lurencun.service.autoupdate;
  * @author ilovedeals
  * 
  */
-public interface Displayer {
+public interface DisplayDelegate {
+
+    /**
+     * 显示最新版本数据
+     * @param version 版本数据
+     */
 	void showFoundLatestVersion(Version version);
+
+    /**
+     * 当前版本已经是最新版本
+     */
 	void showIsLatestVersion();
 }

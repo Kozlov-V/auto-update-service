@@ -37,7 +37,7 @@ public class AppUpdateService{
 	
 	class AutoUpgradeDelegate implements AppUpdate, ResponseCallback, VersionDialogListener{
 
-		private Displayer customShowingDelegate;
+		private DisplayDelegate customShowingDelegate;
 		private Version latestVersion;
 		
 		@Override
@@ -89,12 +89,10 @@ public class AppUpdateService{
 		
 		String extractName(String path) {
 			String tempFileName = "_temp@"+path.hashCode();
-			if(path != null) {
-				boolean fileNameExist = path.substring(path.length() - 5, path.length()).contains(".");
-				if(fileNameExist){
-					tempFileName = path.substring(path.lastIndexOf(File.separator) + 1);
-				}
-			}
+            boolean fileNameExist = path.substring(path.length() - 5, path.length()).contains(".");
+            if(fileNameExist){
+                tempFileName = path.substring(path.lastIndexOf(File.separator) + 1);
+            }
 			return tempFileName;
 		}
 		
@@ -144,7 +142,7 @@ public class AppUpdateService{
 		}
 
 		@Override
-		public void setCustomDisplayer(Displayer delegate) {
+		public void setCustomDisplayer(DisplayDelegate delegate) {
 			customShowingDelegate = delegate;
 		}
 

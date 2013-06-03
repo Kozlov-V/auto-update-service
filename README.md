@@ -3,7 +3,7 @@ auto-update-service
 
 An Android Service, provide a easy way to update app automatically.
 
-Android App自动更新服务。
+Android App自动更新服务（非Service）。
 
 ## 简单的使用例子
 
