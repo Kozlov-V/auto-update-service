@@ -14,7 +14,8 @@ public class VersionPersistent {
 	public static final String VERSION_NAME = "name";
 	public static final String VERSION_FEATURE = "feature";
 	public static final String VERSION_URL = "url";
-	
+	public static final String VERSION_TIME = "time";
+
 	private SharedPreferences shared;
 	
 	public VersionPersistent(Context context){
@@ -29,6 +30,7 @@ public class VersionPersistent {
 		editor.putString(VERSION_FEATURE, version.feature);
 		editor.putString(VERSION_NAME, version.name);
 		editor.putString(VERSION_URL, version.targetUrl);
+		editor.putString(VERSION_TIME, version.releaseTime);
 		editor.commit();
 	}
 	
@@ -44,8 +46,9 @@ public class VersionPersistent {
 			String name = shared.getString(VERSION_NAME, null);
 			String feature = shared.getString(VERSION_FEATURE, null);
 			String url = shared.getString(VERSION_URL, null);
+			String time = shared.getString(VERSION_TIME, null);
 			if(name == null || url == null) return null;
-			return new Version(code, name, feature, url);
+			return new Version(code, name, feature, url, time);
 		}
 		return null;
 	}

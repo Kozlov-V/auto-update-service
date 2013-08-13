@@ -22,7 +22,8 @@ public class SimpleJSONParser implements ResponseParser{
 				String name = dataField.getString("version");
 				String feature = dataField.getString("content");
 				String targetUrl = dataField.getString("downloadUrl");
-				version = new Version(code, name, feature, targetUrl);
+				String releaseTime = dataField.getString("releaseTime");
+				version = new Version(code, name, feature, targetUrl, releaseTime);
 			}
 			return version;
 		}catch(JSONException exp){

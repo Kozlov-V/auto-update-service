@@ -12,31 +12,28 @@ public interface AppUpdate {
 
 	/**
 	 * 取得checkLatestVersion调用后创建的Version信息
-	 * 
-	 * @return
+	 * @return 版本对象
 	 */
 	Version getLatestVersion();
 
 	/**
 	 * 设置自定义显示新版本信息接口
-	 * 
-	 * @param displayer
+	 * @param displayDelegate 显示接口
 	 */
-	void setCustomDisplayer(DisplayDelegate displayer);
+	void setCustomDisplayer(DisplayDelegate displayDelegate);
 
 	/**
 	 * 从指定URL检查新版本，并指定响应数据解析器。
 	 * 如果URL返回的版本码大于当前App的版本码，若没有通过setCustomVersionShowing指定版本提示的
 	 * 显示方式，默认弹出一个系统级窗口（需要指定 <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> 权限）。
-	 * @param url
-	 * @param parser
+	 * @param url 检测URL
+	 * @param parser 解析接口
 	 */
 	void checkLatestVersion(String url, ResponseParser parser);
 
 	/**
 	 * 从指定版本中下载并安装APK文件
-	 * 
-	 * @param url
+	 * @param targetVersion 版本对象
 	 */
 	void downloadAndInstall(Version targetVersion);
 	

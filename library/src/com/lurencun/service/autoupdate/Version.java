@@ -21,19 +21,30 @@ public class Version {
 	 * 此版本APK下载地址
 	 */
 	public final String targetUrl;
-	
-	public Version(int code,String name,String feature,String targetUrl){
-		this.code = code;
-		this.name = name;
-		this.feature = feature;
-		this.targetUrl = targetUrl;
-	}
+
+    /**
+     * 发布时间
+     */
+	public final String releaseTime;
+
+	public Version(int code, String name, String feature, String targetUrl){
+		this(code, name, feature, targetUrl,null);
+    }
+
+    public Version(int code, String name, String feature, String targetUrl, String releaseTime){
+        this.code = code;
+        this.name = name;
+        this.feature = feature;
+        this.targetUrl = targetUrl;
+        this.releaseTime = releaseTime;
+    }
 	
 	@Override
 	public String toString(){
 		StringBuilder buffer = new StringBuilder(":: VERSION -> ");
 		buffer.append("Code:").append(code).append(", ");
 		buffer.append("Name:").append(name).append(", ");
+		buffer.append("Time:").append(releaseTime).append(", ");
 		buffer.append("Feature:").append(feature).append(", ");
 		buffer.append("TargetUrl:").append(targetUrl);
 		return buffer.toString();

@@ -68,8 +68,8 @@ public class FoundVersionDialog {
         Display display = windowManager.getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
         display.getMetrics(metrics);
-        int width = metrics.heightPixels;
-        int height = metrics.widthPixels;
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
 	    if (height > width) {  
 	        lp.width = (int) (width * 0.9);          
 	    } else {  

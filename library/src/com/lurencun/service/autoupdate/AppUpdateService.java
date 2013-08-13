@@ -84,7 +84,7 @@ public class AppUpdateService{
 		}
 		
 		boolean isNetworkActive(){
-			return NetworkUtil.getNetworkType(context) != NetworkUtil.NOCONNECTION;
+			return NetworkUtil.getNetworkType(context) != NetworkUtil.NO_CONNECTION;
 		}
 		
 		String extractName(String path) {
@@ -142,8 +142,8 @@ public class AppUpdateService{
 		}
 
 		@Override
-		public void setCustomDisplayer(DisplayDelegate delegate) {
-			customShowingDelegate = delegate;
+		public void setCustomDisplayer(DisplayDelegate displayDelegate) {
+			customShowingDelegate = displayDelegate;
 		}
 
 		@Override
