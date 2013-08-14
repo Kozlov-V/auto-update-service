@@ -11,7 +11,7 @@ public class SimpleJSONParser implements ResponseParser{
 
     @Override
     public Version parser(String response) {
-        Version version = new Version(0,null,null,null, null);
+        Version version = new Version(0,null, null, null,null, null);
         try{
             JSONTokener jsonParser = new JSONTokener(response);
             JSONObject versionObject = (JSONObject) jsonParser.nextValue();
@@ -20,7 +20,8 @@ public class SimpleJSONParser implements ResponseParser{
             String releaseNote = versionObject.getString("releaseNote");
             String releaseUrl = versionObject.getString("releaseUrl");
             String releaseTime = versionObject.getString("releaseTime");
-            version = new Version(versionCode,versionName,releaseNote,releaseUrl, releaseTime);
+            String releaseApp = versionObject.getString("releaseApp");
+            version = new Version(versionCode,versionName, releaseApp, releaseNote,releaseUrl, releaseTime);
         } catch (JSONException e) {
             e.printStackTrace();
         }

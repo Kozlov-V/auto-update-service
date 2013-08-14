@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import android.widget.Toast;
+import com.lurencun.service.autoupdate.R;
 import com.lurencun.service.autoupdate.ResponseParser;
 import com.lurencun.service.autoupdate.Version;
 
@@ -43,8 +45,8 @@ public class VerifyTask extends AsyncTask<String, Integer, Version> {
 		}
 		return latestVersion;
 	}
-	
-	@Override  
+
+    @Override
     protected void onPostExecute(Version latestVersion) {  
         super.onPostExecute(latestVersion);
         if(comparedWithCurrentPackage(latestVersion)){

@@ -39,23 +39,47 @@ public class AppUpdateService{
 
 		private DisplayDelegate customShowingDelegate;
 		private Version latestVersion;
+
+        private String checkUrl;
+        private ResponseParser parser;
 		
 		@Override
 		public void checkLatestVersion(String url, ResponseParser parser) {
-			checkVersion(url, parser, false);
+            setCheckUrl(url);
+            setResponseParser(parser);
+			checkVersion(false);
 		}
-		
+
+        @Override
+        public void setCheckUrl(String url) {
+            checkUrl = url;
+        }
+
+        @Override
+        public void setResponseParser(ResponseParser parser) {
+            this.parser = parser;
+        }
+
 		@Override
 		public void checkAndUpdateDirectly(String url, ResponseParser parser) {
-			checkVersion(url, parser, true);
+            setCheckUrl(url);
+            setResponseParser(parser);
+            checkVersion(true);
 		}
-		
-		void checkVersion(String url, ResponseParser parser, boolean isUpdateDirectly){
+
+        @Override
+        public void checkAndShow() {
+            checkVersion(false);
+        }
+
+        void checkVersion(boolean isUpdateDirectly){
 			updateDirectly = isUpdateDirectly;
 			if(isNetworkActive()){
 				VerifyTask task = new VerifyTask(context,parser,this);
-				task.execute(url);
-			}
+				task.execute(checkUrl);
+			}else{
+                Toast.makeText(context,R.string.network_not_activated,Toast.LENGTH_SHORT).show();
+            }
 		}
 		
 		@Override
@@ -64,18 +88,24 @@ public class AppUpdateService{
 		}
 		
 		@Override
-		public void downloadAndInstall(Version latestVersion) {
-			if ( latestVersion == null || !isNetworkActive() ) return;
+		public void downloadAndInstall(Version version) {
+			if ( version == null || !isNetworkActive() ){
+                return;
+            }
 			downloader = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 			Query query = new Query();
 			query.setFilterById(downloadTaskId);
 			Cursor cur = downloader.query(query);
 			//下载任务已经存在的话
-			if(cur.moveToNext()) return;
-			DownloadManager.Request task = new DownloadManager.Request(Uri.parse(latestVersion.targetUrl));
-			String apkName = extractName(latestVersion.targetUrl);
-			task.setTitle(latestVersion.name);
-			task.setDescription(latestVersion.feature);
+			if(cur.moveToNext()) {
+                return;
+            }
+            cur.close();
+            DownloadManager.Request task = new DownloadManager.Request(Uri.parse(version.targetUrl));
+			String apkName = extractName(version.targetUrl);
+            String title = (version.app == null ? "": version.app+" - ") + version.name;
+			task.setTitle(title);
+			task.setDescription(version.feature);
 			task.setVisibleInDownloadsUi(true);
 			task.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
 			task.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, apkName);
@@ -98,12 +128,12 @@ public class AppUpdateService{
 		@Override
 		public void onFoundLatestVersion(Version version) {
 			this.latestVersion = version;
-			
+
 			if(updateDirectly){
+                String versionTipFormat = context.getResources().getString(R.string.update_latest_version_title);
+                Toast.makeText(context, String.format(versionTipFormat, latestVersion.name), Toast.LENGTH_LONG).show();
 				downloadAndInstall(latestVersion);
-				String versionTipFormat = context.getResources().getString(R.string.update_latest_version_title);
-				Toast.makeText(context, String.format(versionTipFormat, latestVersion.name), Toast.LENGTH_LONG).show();
-				return;
+				return; // 直接下载，不需要弹出提示窗口。
 			}
 			
 			if(customShowingDelegate != null){
@@ -184,7 +214,6 @@ public class AppUpdateService{
 						installIntent.setAction(android.content.Intent.ACTION_VIEW);
 						installIntent.setDataAndType(Uri.fromFile(apkFile),"application/vnd.android.package-archive");
 						context.startActivity(installIntent);
-						
 					} else {
 						Toast.makeText(context, R.string.download_failure, Toast.LENGTH_SHORT).show();
 					}

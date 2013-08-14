@@ -11,6 +11,11 @@ public class Version {
 	 * 版本名 e.g: 1.0.9
 	 */
 	public final String name;
+
+    /**
+     * 应用名 e.g: Facebook - Android
+     */
+    public final String app;
 	
 	/**
 	 * 此版本特性 e.g: Fixed bugs
@@ -28,12 +33,13 @@ public class Version {
 	public final String releaseTime;
 
 	public Version(int code, String name, String feature, String targetUrl){
-		this(code, name, feature, targetUrl,null);
+		this(code, name, null, feature, targetUrl,null);
     }
 
-    public Version(int code, String name, String feature, String targetUrl, String releaseTime){
+    public Version(int code, String name, String app, String feature, String targetUrl, String releaseTime){
         this.code = code;
         this.name = name;
+        this.app = app;
         this.feature = feature;
         this.targetUrl = targetUrl;
         this.releaseTime = releaseTime;
@@ -44,6 +50,7 @@ public class Version {
 		StringBuilder buffer = new StringBuilder(":: VERSION -> ");
 		buffer.append("Code:").append(code).append(", ");
 		buffer.append("Name:").append(name).append(", ");
+		buffer.append("AppName:").append(app).append(", ");
 		buffer.append("Time:").append(releaseTime).append(", ");
 		buffer.append("Feature:").append(feature).append(", ");
 		buffer.append("TargetUrl:").append(targetUrl);

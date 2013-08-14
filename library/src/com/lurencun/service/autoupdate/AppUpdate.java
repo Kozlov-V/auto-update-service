@@ -32,22 +32,40 @@ public interface AppUpdate {
 	void checkLatestVersion(String url, ResponseParser parser);
 
 	/**
-	 * 从指定版本中下载并安装APK文件
-	 * @param targetVersion 版本对象
-	 */
-	void downloadAndInstall(Version targetVersion);
-	
-	/**
-	 * 下载当前已经取得的版本
-	 */
-	void downloadAndInstallCurrent();
-
-	/**
 	 * 如果发现新版本，无须弹出提示，直接下载并安装。
 	 */
 	void checkAndUpdateDirectly(String url, ResponseParser parser);
 
-	/**
+    /**
+     * 设置检测URL
+     * @param url 检测新版本的URL
+     */
+    void setCheckUrl(String url);
+
+    /**
+     * 设置响应解析接口
+     * @param parser 解析接口
+     */
+    void setResponseParser(ResponseParser parser);
+
+    /**
+     * 检测并弹出提示框
+     */
+    void checkAndShow();
+
+    /**
+     * 下载当前已经取得的版本
+     */
+    void downloadAndInstallCurrent();
+
+    /**
+     * 从指定版本中下载并安装APK文件
+     * @param targetVersion 版本对象
+     */
+    void downloadAndInstall(Version targetVersion);
+
+
+    /**
 	 * 在Activity中调用此方法，用以注册Receiver
 	 */
 	void callOnResume();
