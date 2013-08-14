@@ -9,27 +9,22 @@ import com.lurencun.service.autoupdate.Version;
 
 public class SimpleJSONParser implements ResponseParser{
 
-	@Override
-	public Version parser(String response) {
-		try{
-			JSONTokener jsonParser = new JSONTokener(response);
-			JSONObject json = (JSONObject) jsonParser.nextValue();
-			boolean success = json.getBoolean("success");
-			Version version = null;
-			if(success){
-				JSONObject dataField = json.getJSONObject("data");
-				int code = dataField.getInt("code");
-				String name = dataField.getString("version");
-				String feature = dataField.getString("content");
-				String targetUrl = dataField.getString("downloadUrl");
-				String releaseTime = dataField.getString("releaseTime");
-				version = new Version(code, name, feature, targetUrl, releaseTime);
-			}
-			return version;
-		}catch(JSONException exp){
-			exp.printStackTrace();
-			return null;
-		}
-	}
+    @Override
+    public Version parser(String response) {
+        Version version = new Version(0,null,null,null, null);
+        try{
+            JSONTokener jsonParser = new JSONTokener(response);
+            JSONObject versionObject = (JSONObject) jsonParser.nextValue();
+            int versionCode = versionObject.getInt("versionCode");
+            String versionName = versionObject.getString("versionName");
+            String releaseNote = versionObject.getString("releaseNote");
+            String releaseUrl = versionObject.getString("releaseUrl");
+            String releaseTime = versionObject.getString("releaseTime");
+            version = new Version(versionCode,versionName,releaseNote,releaseUrl, releaseTime);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return version;
+    }
 
 }
