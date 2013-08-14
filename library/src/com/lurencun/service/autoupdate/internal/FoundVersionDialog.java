@@ -31,7 +31,11 @@ public class FoundVersionDialog {
         
         TextView title = (TextView) dialog.findViewById(R.id.title);
         TextView feature = (TextView) dialog.findViewById(R.id.feature);
-        title.setText(String.format(context.getResources().getString(R.string.latest_version_title), version.name));
+        TextView time = (TextView) dialog.findViewById(R.id.time);
+        title.setText(String.format(context.getResources().getString(R.string.latest_version_title),
+                version.name));
+        time.setText(String.format(context.getResources().getString(R.string.latest_version_time),
+                version.releaseTime));
         feature.setText(version.feature);
         
         View ignore = dialog.findViewById(R.id.ignore);

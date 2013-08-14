@@ -23,6 +23,15 @@
         android:textColor="#FF525252"
         android:textSize="14sp" />
 
+    <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="3dp"
+            android:textColor="#484848"
+            android:textSize="12sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

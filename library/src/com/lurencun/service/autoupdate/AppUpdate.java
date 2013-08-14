@@ -20,7 +20,7 @@ public interface AppUpdate {
 	 * 设置自定义显示新版本信息接口
 	 * @param displayDelegate 显示接口
 	 */
-	void setCustomDisplayer(DisplayDelegate displayDelegate);
+	void setDisplayDelegate(DisplayDelegate displayDelegate);
 
 	/**
 	 * 从指定URL检查新版本，并指定响应数据解析器。

@@ -74,8 +74,7 @@ public class AppUpdateService{
 			if(cur.moveToNext()) return;
 			DownloadManager.Request task = new DownloadManager.Request(Uri.parse(latestVersion.targetUrl));
 			String apkName = extractName(latestVersion.targetUrl);
-			String title = String.format("%s - v%s", apkName,latestVersion.name);
-			task.setTitle(title);
+			task.setTitle(latestVersion.name);
 			task.setDescription(latestVersion.feature);
 			task.setVisibleInDownloadsUi(true);
 			task.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
@@ -120,7 +119,7 @@ public class AppUpdateService{
 			if(customShowingDelegate != null){
 				customShowingDelegate.showIsLatestVersion();
 			}else{
-		        Toast.makeText(context, R.string.is_latest_version_label, Toast.LENGTH_LONG).show();
+		        Toast.makeText(context,R.string.is_latest_version_label , Toast.LENGTH_SHORT).show();
 			}
 		}
 
@@ -130,7 +129,6 @@ public class AppUpdateService{
 			isRegistered = true;
 			context.registerReceiver(downloaderReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 			context.registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-			
 		}
 
 		@Override
@@ -142,7 +140,7 @@ public class AppUpdateService{
 		}
 
 		@Override
-		public void setCustomDisplayer(DisplayDelegate displayDelegate) {
+		public void setDisplayDelegate(DisplayDelegate displayDelegate) {
 			customShowingDelegate = displayDelegate;
 		}
 
