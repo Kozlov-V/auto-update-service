@@ -93,6 +93,16 @@ public class AppUpdateService{
 			if ( version == null || !isNetworkActive() ){
                 return;
             }
+            // 判断同名文件是否存在
+            String apkName = extractName(version.targetUrl);
+            String dirPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+            dirPath = dirPath.endsWith(File.separator) ? dirPath : dirPath + File.separator;
+            String targetApkPath = dirPath + apkName;
+            File targetApkFile = new File(targetApkPath);
+            if(targetApkFile.exists()){
+                installAPKFile(targetApkFile);
+            }
+
 			downloader = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 			Query query = new Query();
 			query.setFilterById(downloadTaskId);
@@ -103,12 +113,12 @@ public class AppUpdateService{
             }
             cur.close();
             DownloadManager.Request task = new DownloadManager.Request(Uri.parse(version.targetUrl));
-			String apkName = extractName(version.targetUrl);
             String title = (version.app == null ? "": version.app+" - ") + version.name;
 			task.setTitle(title);
 			task.setDescription(version.feature);
 			task.setVisibleInDownloadsUi(true);
-			task.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+			task.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE
+                    | DownloadManager.Request.NETWORK_WIFI);
 			task.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, apkName);
 			downloadTaskId = downloader.enqueue(task);
 		}
@@ -194,6 +204,15 @@ public class AppUpdateService{
 
 	}
 
+    private void installAPKFile(File apkFile){
+        Intent installIntent = new Intent();
+        installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        installIntent.setAction(android.content.Intent.ACTION_VIEW);
+        installIntent.setDataAndType(Uri.fromFile(apkFile),"application/vnd.android.package-archive");
+        context.startActivity(installIntent);
+        apkFile.deleteOnExit();
+    }
+
     /**
      * 下载完成的广播
      */
@@ -213,11 +232,11 @@ public class AppUpdateService{
 						new VersionPersistent(context).clear();
 						String uriString = cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
 						File apkFile = new File(Uri.parse(uriString).getPath());
-						Intent installIntent = new Intent();
-						installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						installIntent.setAction(android.content.Intent.ACTION_VIEW);
-						installIntent.setDataAndType(Uri.fromFile(apkFile),"application/vnd.android.package-archive");
-						context.startActivity(installIntent);
+                        if(apkFile.exists()){
+                            installAPKFile(apkFile);
+                        }else{
+                            Toast.makeText(context, R.string.apk_file_not_exists, Toast.LENGTH_SHORT).show();
+                        }
 					} else {
 						Toast.makeText(context, R.string.download_failure, Toast.LENGTH_SHORT).show();
 					}
