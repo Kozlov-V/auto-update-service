@@ -11,7 +11,7 @@ public class SimpleJSONParser implements ResponseParser{
 
     @Override
     public Version parser(String response) {
-        Version version = new Version(0,null, null, null,null, null);
+        Version version = null;
         try{
             JSONTokener jsonParser = new JSONTokener(response);
             JSONObject versionObject = (JSONObject) jsonParser.nextValue();

@@ -32,23 +32,23 @@ public class VerifyTask extends AsyncTask<String, Integer, Version> {
 	@Override
 	protected Version doInBackground(String... args) {
 		String url = args[0];
-		Version latestVersion = null;
+        String response = null;
 		try {
 			URL targetUrl = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) targetUrl.openConnection();
 			InputStream is = connection.getInputStream();
-			latestVersion = parser.parser(toStringBuffer(is).toString());
+            response = toStringBuffer(is).toString();
 			is.close();
 			connection.disconnect();
 		} catch (Exception exp) {
 			exp.printStackTrace();
 		}
-		return latestVersion;
+		return response == null ? null : parser.parser(response);
 	}
 
     @Override
-    protected void onPostExecute(Version latestVersion) {  
-        super.onPostExecute(latestVersion);
+    protected void onPostExecute(Version latestVersion) {
+        if(latestVersion == null) return; // 为null,网络异常，不做处理。
         if(comparedWithCurrentPackage(latestVersion)){
 			callback.onFoundLatestVersion(latestVersion);
 		}else{

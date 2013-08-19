@@ -77,7 +77,8 @@ public class AppUpdateService{
 			if(isNetworkActive()){
 				VerifyTask task = new VerifyTask(context,parser,this);
 				task.execute(checkUrl);
-			}else{
+			}else if(isUpdateDirectly){
+                // 手动更新时，才提示用户网络没有开启
                 Toast.makeText(context,R.string.network_not_activated,Toast.LENGTH_SHORT).show();
             }
 		}
@@ -192,7 +193,10 @@ public class AppUpdateService{
 		public void doIgnore() {}
 
 	}
-	
+
+    /**
+     * 下载完成的广播
+     */
 	class DownloadReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context c, Intent intent) {
@@ -223,7 +227,10 @@ public class AppUpdateService{
 			
 		}
 	}
-	
+
+    /**
+     * 网络发生变化
+     */
 	class NetworkStateReceiver extends BroadcastReceiver{
 		@Override
 		public void onReceive(Context context, Intent intent) {
