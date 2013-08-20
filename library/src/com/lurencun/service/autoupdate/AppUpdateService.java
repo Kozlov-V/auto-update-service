@@ -29,7 +29,7 @@ public class AppUpdateService{
 	private NetworkStateReceiver networkReceiver;
 	
 	private boolean updateDirectly = false;
-	
+	private boolean _3thPartyDownloader = false;
 	private boolean isRegistered = false;
 	
 	private long downloadTaskId = -12306;
@@ -87,8 +87,13 @@ public class AppUpdateService{
 		public void downloadAndInstallCurrent() {
 			downloadAndInstall(latestVersion);
 		}
-		
-		@Override
+
+        @Override
+        public void enable3thPartyDownloader(boolean enable) {
+            _3thPartyDownloader = enable;
+        }
+
+        @Override
 		public void downloadAndInstall(Version version) {
 			if ( version == null || !isNetworkActive() ){
                 return;
@@ -101,6 +106,15 @@ public class AppUpdateService{
             File targetApkFile = new File(targetApkPath);
             if(targetApkFile.exists()){
                 installAPKFile(targetApkFile);
+                return;
+            }
+
+            // 第三方下载
+            if(_3thPartyDownloader){
+                Uri uri = Uri.parse(version.targetUrl);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(intent);
+                return;
             }
 
 			downloader = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);

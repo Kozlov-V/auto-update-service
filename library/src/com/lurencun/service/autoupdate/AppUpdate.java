@@ -59,6 +59,12 @@ public interface AppUpdate {
     void downloadAndInstallCurrent();
 
     /**
+     * 启用第三方下载器
+     * @param enable 是否启用
+     */
+    void enable3thPartyDownloader(boolean enable);
+
+    /**
      * 从指定版本中下载并安装APK文件
      * @param targetVersion 版本对象
      */
